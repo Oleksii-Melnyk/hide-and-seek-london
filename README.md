@@ -37,9 +37,17 @@ no map tiles, so it prints cleanly in black and white and you can cross
 circles off with a pen. Pick A4 or A3 in the toolbar and hit Print, or take
 the pre-rendered PDFs in `sheets/`.
 
-The Thames is drawn schematically, traced through the bridges, purely so the
-sheet has something to orient against. Dashed circles are the stations that
-are not Underground.
+Two modes:
+
+- **Line work** — circles, names, a schematic Thames traced through the
+  bridges, and nothing else. Prints in black and white on any printer and
+  leaves the page clear enough to write on. The pre-rendered PDFs in
+  `sheets/` are this mode.
+- **Streets** — the same circles over the CARTO basemap, so you get real
+  street names. Needs a network connection at print time, and you must
+  enable *Background graphics* in the print dialog or the tiles drop out.
+
+Dashed circles are the stations that are not Underground.
 
 ## Editing the game
 

@@ -22,6 +22,12 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  function box(size) {
+    var S = SIZES[size];
+    return { S: S, x: MARGIN, y: MARGIN + HEADER,
+             w: S.w - 2 * MARGIN, h: S.h - 2 * MARGIN - HEADER };
+  }
+
   function build(size) {
     var S = SIZES[size];
     var boxW = S.w - 2 * MARGIN, boxH = S.h - 2 * MARGIN - HEADER;
@@ -152,21 +158,144 @@
       '</svg>';
   }
 
+  var tileMap = null;
+
+  function buildStreets(size) {
+    var b = box(size), S = b.S;
+    var host = document.getElementById('sheet');
+    host.innerHTML =
+      '<div class="sheet streets" style="width:' + S.w + 'mm;height:' + S.h + 'mm">' +
+        '<div class="hd" style="left:' + MARGIN + 'mm;top:' + MARGIN + 'mm;' +
+          'width:' + (S.w - 2 * MARGIN) + 'mm">' +
+          '<span class="t">Hide &amp; Seek &middot; London Zone 1</span>' +
+          '<span class="f">Hider ______________ &nbsp; Start ______ : ______ &nbsp; ' +
+          'Found ______ : ______ &nbsp; Bonuses + ______ min</span>' +
+          '<span class="s">' + STATIONS.length + ' stations &middot; 400 m hiding circles &middot; ' +
+          'cross one out when it is ruled out</span>' +
+        '</div>' +
+        '<div id="tiles" style="left:' + b.x + 'mm;top:' + b.y + 'mm;' +
+          'width:' + b.w + 'mm;height:' + b.h + 'mm"></div>' +
+      '</div>';
+
+    if (tileMap) { tileMap.remove(); tileMap = null; }
+    tileMap = L.map('tiles', { zoomControl: false, zoomSnap: 0.25, attributionControl: true });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd', maxZoom: 20, r: '@2x',
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+    }).addTo(tileMap);
+
+    var bounds = L.latLngBounds([]);
+    var dLat = RADIUS / 111320, dLon = RADIUS / (111320 * Math.cos(LAT0 * Math.PI / 180));
+    STATIONS.forEach(function (st) {
+      bounds.extend([st.lat + dLat, st.lon + dLon]).extend([st.lat - dLat, st.lon - dLon]);
+      L.circle([st.lat, st.lon], {
+        radius: RADIUS, color: '#0f172a', weight: 1.1, opacity: .9,
+        fill: false, dashArray: st.m === 'tube' ? null : '4 3'
+      }).addTo(tileMap);
+      L.marker([st.lat, st.lon], {
+        interactive: false,
+        icon: L.divIcon({ className: 'pin', html: '<i></i>', iconSize: [7, 7], iconAnchor: [3.5, 3.5] })
+      }).addTo(tileMap);
+    });
+
+    /* Labels live in their own overlay so they can be laid out without
+       colliding — the same greedy placement the plain sheet uses, in pixels. */
+    var overlay = document.createElement('div');
+    overlay.id = 'pinlabels';
+    document.getElementById('tiles').appendChild(overlay);
+
+    function layoutLabels() {
+      var FS = 8, placed = [], html = [];
+      var pts = STATIONS.map(function (st) {
+        var p = tileMap.latLngToContainerPoint([st.lat, st.lon]);
+        return { x: p.x, y: p.y, n: st.n };
+      });
+      pts.forEach(function (p) {
+        placed.push({ x1: p.x - 4, x2: p.x + 4, y1: p.y - 4, y2: p.y + 4 });
+      });
+
+      var cands = [];
+      [[7, 0], [17, 1], [28, 2]].forEach(function (ring) {
+        var d = ring[0];
+        cands.push([ d, 3, 'left', ring[1]], [-d, 3, 'right', ring[1]],
+                   [ 0, -d, 'center', ring[1]], [0, d + FS, 'center', ring[1]],
+                   [ d, -d * 0.7, 'left', ring[1]], [-d, -d * 0.7, 'right', ring[1]],
+                   [ d, d * 0.7 + 3, 'left', ring[1]], [-d, d * 0.7 + 3, 'right', ring[1]]);
+      });
+      function hit(a, b) { return !(a.x2 < b.x1 || b.x2 < a.x1 || a.y2 < b.y1 || b.y2 < a.y1); }
+
+      var order = pts.map(function (p, i) {
+        var near = 0;
+        pts.forEach(function (q) { if (q !== p && Math.abs(q.x - p.x) < 70 && Math.abs(q.y - p.y) < 70) near++; });
+        return { i: i, near: near };
+      }).sort(function (a, b) { return b.near - a.near; });
+
+      order.forEach(function (o) {
+        var p = pts[o.i], w = p.n.length * FS * 0.56, best = null, bestHits = 1e9;
+        for (var i = 0; i < cands.length; i++) {
+          var x = p.x + cands[i][0], y = p.y + cands[i][1], al = cands[i][2];
+          var x1 = al === 'left' ? x : al === 'right' ? x - w : x - w / 2;
+          var b = { x1: x1 - 1, x2: x1 + w + 1, y1: y - FS, y2: y + 2 };
+          var n = 0;
+          for (var j = 0; j < placed.length; j++) if (hit(b, placed[j])) n++;
+          if (n < bestHits) { bestHits = n; best = { x1: x1, y: y, box: b, lead: cands[i][3], px: p.x, py: p.y }; }
+          if (n === 0) break;
+        }
+        placed.push(best.box);
+        if (best.lead) {
+          var lx = best.x1 + w / 2, ly = best.y - FS / 2;
+          var len = Math.hypot(lx - best.px, ly - best.py);
+          var ang = Math.atan2(ly - best.py, lx - best.px) * 180 / Math.PI;
+          html.push('<i class="lead" style="left:' + best.px + 'px;top:' + best.py +
+                    'px;width:' + len + 'px;transform:rotate(' + ang + 'deg)"></i>');
+        }
+        html.push('<b style="left:' + best.x1 + 'px;top:' + (best.y - FS) + 'px">' + p.n + '</b>');
+      });
+      overlay.innerHTML = html.join('');
+    }
+
+    tileMap.on('moveend zoomend', layoutLabels);
+    tileMap.fitBounds(bounds, { padding: [4, 4] });
+    setTimeout(function () {
+      tileMap.invalidateSize();
+      tileMap.fitBounds(bounds, { padding: [4, 4] });
+      layoutLabels();
+    }, 80);
+  }
+
+  window.addEventListener('beforeprint', function () { if (tileMap) tileMap.invalidateSize(); });
+
   function show(size) {
     var S = SIZES[size];
     document.getElementById('pagesize').textContent =
       '@page { size: ' + S.w + 'mm ' + S.h + 'mm; margin: 0 }';
-    document.getElementById('sheet').innerHTML = build(size);
+    if (mode === 'streets') buildStreets(size); else
+      document.getElementById('sheet').innerHTML = build(size);
     Array.prototype.forEach.call(document.querySelectorAll('#sizes button'), function (b) {
       b.classList.toggle('active', b.dataset.size === size);
     });
     document.title = 'Hide & Seek Zone 1 — ' + S.label;
   }
 
+  var mode = 'plain', current = 'a4';
+
   document.getElementById('sizes').addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-size]'); if (b) show(b.dataset.size);
+    var b = e.target.closest('button[data-size]'); if (b) { current = b.dataset.size; show(current); }
+  });
+  document.getElementById('modes').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-mode]'); if (!b) return;
+    mode = b.dataset.mode;
+    Array.prototype.forEach.call(this.children, function (x) { x.classList.toggle('active', x === b); });
+    show(current);
   });
   document.getElementById('btn-print').addEventListener('click', function () { window.print(); });
 
-  show(new URLSearchParams(location.search).get('size') === 'a3' ? 'a3' : 'a4');
+  var qs = new URLSearchParams(location.search);
+  current = qs.get('size') === 'a3' ? 'a3' : 'a4';
+  if (qs.get('mode') === 'streets') {
+    mode = 'streets';
+    document.querySelector('#modes button[data-mode="streets"]').classList.add('active');
+    document.querySelector('#modes button[data-mode="plain"]').classList.remove('active');
+  }
+  show(current);
 })();

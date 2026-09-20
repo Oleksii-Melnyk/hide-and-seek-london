@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Hide &amp; Seek Zone 1 — print sheet</title>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css?v=dev">
 <style id="pagesize">@page { size: 297mm 210mm; margin: 0 }</style>
 <style>
   body{margin:0;background:#e2e8f0;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#0f172a}
@@ -26,7 +27,25 @@
   .bar{stroke:#0f172a;stroke-width:.3;fill:none}
   .leader{stroke:#94a3b8;stroke-width:.15}
 
+  /* streets mode: real basemap under the circles */
+  .sheet.streets{position:relative}
+  .sheet.streets .hd{position:absolute;display:flex;align-items:baseline;gap:4mm;flex-wrap:wrap}
+  .sheet.streets .hd .t{font:700 14px Helvetica,Arial,sans-serif}
+  .sheet.streets .hd .f{margin-left:auto;font:9px Helvetica,Arial,sans-serif;color:#64748b}
+  .sheet.streets .hd .s{flex-basis:100%;font:9px Helvetica,Arial,sans-serif;color:#64748b;
+    border-top:1px solid #cbd5e1;padding-top:1mm;margin-top:.5mm}
+  #tiles{position:absolute;background:#fff;border:1px solid #cbd5e1}
+  .leaflet-container{background:#fff}
+  .pin{background:none;border:0}
+  .pin i{display:block;width:5px;height:5px;border-radius:50%;background:#0f172a;margin:0 auto}
+  #pinlabels{position:absolute;inset:0;z-index:650;pointer-events:none}
+  #pinlabels b{position:absolute;font:700 8px Helvetica,Arial,sans-serif;color:#0f172a;
+    white-space:nowrap;paint-order:stroke;-webkit-text-stroke:2.5px #fff}
+  #pinlabels i.lead{position:absolute;height:0;border-top:.5px solid #94a3b8;transform-origin:0 0}
+  .leaflet-control-attribution{font-size:7px;background:rgba(255,255,255,.85)}
+
   @media print{
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     body{background:#fff}
     #bar{display:none}
     #sheet{padding:0}
@@ -37,10 +56,12 @@
 <body>
 <div id="bar">
   <strong>Printable sheet</strong>
+  <span id="modes"><button data-mode="plain" class="active">Line work</button> <button data-mode="streets">Streets</button></span>
   <span id="sizes"><button data-size="a4">A4</button> <button data-size="a3">A3</button></span>
   <button id="btn-print">Print</button>
 </div>
 <div id="sheet"></div>
+<script src="vendor/leaflet/leaflet.js?v=dev"></script>
 <script src="data/stations.js?v=dev"></script>
 <script src="data/thames.js?v=dev"></script>
 <script src="js/print.js?v=dev"></script>
