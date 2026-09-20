@@ -1,0 +1,81 @@
+/* London Zone 1 stations (plus the Zone 1/2 boundary stations).
+ *
+ * mode: "tube" | "dlr" | "rail" | "overground" | "elizabeth"
+ * Coordinates are WGS84 decimal degrees, taken at the main station entrance.
+ * Edit freely — the app reads this file at load time.
+ *
+ * Note: the two Edgware Road stations are ~150 m apart, so they are merged
+ * into a single point. Their 400 m circles would be indistinguishable.
+ */
+window.STATIONS = [
+  { n: "Aldgate",                  lat: 51.5143, lon: -0.0755, m: "tube" },
+  { n: "Aldgate East",             lat: 51.5154, lon: -0.0726, m: "tube" },
+  { n: "Angel",                    lat: 51.5322, lon: -0.1058, m: "tube" },
+  { n: "Baker Street",             lat: 51.5226, lon: -0.1571, m: "tube" },
+  { n: "Bank",                     lat: 51.5133, lon: -0.0886, m: "tube" },
+  { n: "Barbican",                 lat: 51.5204, lon: -0.0979, m: "tube" },
+  { n: "Bayswater",                lat: 51.5121, lon: -0.1879, m: "tube" },
+  { n: "Blackfriars",              lat: 51.5120, lon: -0.1031, m: "tube" },
+  { n: "Bond Street",              lat: 51.5142, lon: -0.1494, m: "tube" },
+  { n: "Borough",                  lat: 51.5011, lon: -0.0943, m: "tube" },
+  { n: "Cannon Street",            lat: 51.5113, lon: -0.0904, m: "tube" },
+  { n: "Chancery Lane",            lat: 51.5185, lon: -0.1111, m: "tube" },
+  { n: "Charing Cross",            lat: 51.5074, lon: -0.1247, m: "tube" },
+  { n: "Covent Garden",            lat: 51.5129, lon: -0.1243, m: "tube" },
+  { n: "Earl's Court",             lat: 51.4920, lon: -0.1973, m: "tube", boundary: true },
+  { n: "Edgware Road",             lat: 51.5201, lon: -0.1690, m: "tube" },
+  { n: "Elephant & Castle",        lat: 51.4943, lon: -0.1001, m: "tube", boundary: true },
+  { n: "Embankment",               lat: 51.5074, lon: -0.1223, m: "tube" },
+  { n: "Euston",                   lat: 51.5282, lon: -0.1337, m: "tube" },
+  { n: "Euston Square",            lat: 51.5258, lon: -0.1359, m: "tube" },
+  { n: "Farringdon",               lat: 51.5203, lon: -0.1053, m: "tube" },
+  { n: "Gloucester Road",          lat: 51.4945, lon: -0.1829, m: "tube" },
+  { n: "Goodge Street",            lat: 51.5205, lon: -0.1347, m: "tube" },
+  { n: "Great Portland Street",    lat: 51.5238, lon: -0.1439, m: "tube" },
+  { n: "Green Park",               lat: 51.5067, lon: -0.1428, m: "tube" },
+  { n: "High Street Kensington",   lat: 51.5009, lon: -0.1925, m: "tube" },
+  { n: "Holborn",                  lat: 51.5174, lon: -0.1201, m: "tube" },
+  { n: "Hyde Park Corner",         lat: 51.5027, lon: -0.1527, m: "tube" },
+  { n: "King's Cross St Pancras",  lat: 51.5308, lon: -0.1238, m: "tube" },
+  { n: "Knightsbridge",            lat: 51.5015, lon: -0.1607, m: "tube" },
+  { n: "Lambeth North",            lat: 51.4991, lon: -0.1115, m: "tube" },
+  { n: "Lancaster Gate",           lat: 51.5119, lon: -0.1756, m: "tube" },
+  { n: "Leicester Square",         lat: 51.5113, lon: -0.1281, m: "tube" },
+  { n: "Liverpool Street",         lat: 51.5178, lon: -0.0823, m: "tube" },
+  { n: "London Bridge",            lat: 51.5052, lon: -0.0864, m: "tube" },
+  { n: "Mansion House",            lat: 51.5122, lon: -0.0940, m: "tube" },
+  { n: "Marble Arch",              lat: 51.5136, lon: -0.1586, m: "tube" },
+  { n: "Marylebone",               lat: 51.5225, lon: -0.1631, m: "tube" },
+  { n: "Monument",                 lat: 51.5108, lon: -0.0863, m: "tube" },
+  { n: "Moorgate",                 lat: 51.5186, lon: -0.0886, m: "tube" },
+  { n: "Notting Hill Gate",        lat: 51.5094, lon: -0.1967, m: "tube", boundary: true },
+  { n: "Old Street",               lat: 51.5263, lon: -0.0873, m: "tube" },
+  { n: "Oxford Circus",            lat: 51.5150, lon: -0.1415, m: "tube" },
+  { n: "Paddington",               lat: 51.5154, lon: -0.1755, m: "tube" },
+  { n: "Piccadilly Circus",        lat: 51.5098, lon: -0.1342, m: "tube" },
+  { n: "Pimlico",                  lat: 51.4893, lon: -0.1334, m: "tube" },
+  { n: "Queensway",                lat: 51.5107, lon: -0.1877, m: "tube" },
+  { n: "Regent's Park",            lat: 51.5234, lon: -0.1466, m: "tube" },
+  { n: "Russell Square",           lat: 51.5230, lon: -0.1244, m: "tube" },
+  { n: "Sloane Square",            lat: 51.4924, lon: -0.1565, m: "tube" },
+  { n: "South Kensington",         lat: 51.4941, lon: -0.1738, m: "tube" },
+  { n: "Southwark",                lat: 51.5011, lon: -0.1050, m: "tube" },
+  { n: "St James's Park",          lat: 51.4994, lon: -0.1335, m: "tube" },
+  { n: "St Paul's",                lat: 51.5146, lon: -0.0973, m: "tube" },
+  { n: "Temple",                   lat: 51.5111, lon: -0.1141, m: "tube" },
+  { n: "Tottenham Court Road",     lat: 51.5165, lon: -0.1310, m: "tube" },
+  { n: "Tower Hill",               lat: 51.5098, lon: -0.0766, m: "tube" },
+  { n: "Vauxhall",                 lat: 51.4861, lon: -0.1253, m: "tube", boundary: true },
+  { n: "Victoria",                 lat: 51.4965, lon: -0.1447, m: "tube" },
+  { n: "Warren Street",            lat: 51.5247, lon: -0.1384, m: "tube" },
+  { n: "Waterloo",                 lat: 51.5036, lon: -0.1143, m: "tube" },
+  { n: "Westminster",              lat: 51.5010, lon: -0.1254, m: "tube" },
+
+  { n: "Tower Gateway",            lat: 51.5106, lon: -0.0743, m: "dlr" },
+
+  { n: "Fenchurch Street",         lat: 51.5116, lon: -0.0785, m: "rail" },
+  { n: "Waterloo East",            lat: 51.5045, lon: -0.1097, m: "rail" },
+  { n: "City Thameslink",          lat: 51.5138, lon: -0.1036, m: "rail" },
+
+  { n: "Shoreditch High Street",   lat: 51.5233, lon: -0.0757, m: "overground" }
+];
