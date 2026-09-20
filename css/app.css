@@ -162,3 +162,5 @@ button.ghost{background:transparent;color:var(--muted);border:1px solid var(--li
 
 .leaflet-control-attribution{font-size:10px;background:rgba(255,255,255,.75)!important}
 .leaflet-bottom.leaflet-right .leaflet-control-scale{margin-bottom:26px}
+
+.rule a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor}

@@ -30,6 +30,17 @@ python3 -m http.server 8765    # then http://127.0.0.1:8765
 Leaflet is vendored in `vendor/leaflet/`; the only network dependency at
 runtime is the CARTO basemap tiles.
 
+## Printing the board
+
+`print.html` renders the same station data as a single sheet of line work —
+no map tiles, so it prints cleanly in black and white and you can cross
+circles off with a pen. Pick A4 or A3 in the toolbar and hit Print, or take
+the pre-rendered PDFs in `sheets/`.
+
+The Thames is drawn schematically, traced through the bridges, purely so the
+sheet has something to orient against. Dashed circles are the stations that
+are not Underground.
+
 ## Editing the game
 
 Everything you'd want to tune lives in `data/`, as plain JavaScript:
@@ -39,7 +50,8 @@ Everything you'd want to tune lives in `data/`, as plain JavaScript:
 | `data/stations.js` | station names, coordinates, mode |
 | `data/rules.js` | the rules tab |
 | `data/questions.js` | question categories, draw/keep costs, question text |
-| `data/deck.js` | every card: type, quantity, cost, text, and a note on how it differs from the printed deck |
+| `data/deck.js` | every card: type, quantity, cost, text, and our reasoning for it |
+| `data/thames.js` | the schematic river used by the print sheet |
 
 The hiding radius (`RADIUS`) and hand limit (`HAND_LIMIT`) are constants at the
 top of `js/app.js`.
