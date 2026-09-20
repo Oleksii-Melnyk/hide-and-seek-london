@@ -45,7 +45,12 @@
   <!-- ---------------- QUESTIONS ---------------- -->
   <section class="panel" id="panel-questions">
     <div class="reading">
-      <p class="lede">Tap a question to log it. The badge is what the hider draws and keeps for answering.</p>
+      <p class="lede">The printed pad's allowed questions, with a verdict on each for a Zone 1 board. Tap one to log it.</p>
+      <div class="chips" id="q-filter">
+        <button class="chip active" data-v="all">Everything</button>
+        <button class="chip" data-v="live">Hide the dead options</button>
+        <button class="chip" data-v="strong">Strong only</button>
+      </div>
       <div id="questions-body"></div>
       <h2>Asked this round</h2>
       <ol id="asked-log"><li class="empty">Nothing asked yet.</li></ol>

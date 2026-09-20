@@ -1,8 +1,9 @@
 /* The Zone 1 house deck.
  *
- * This is a companion to a physical Hide+Seek deck, not a replacement: the
- * numbers are rescaled for a 6 km board and the curses are London-specific.
- * `note` says what changed relative to the printed card it descends from.
+ * A companion to a physical deck, not a replacement: the numbers are sized
+ * for a 6 km board and the curses are London-specific. `note` is our
+ * reasoning for the card, not a claim about any printed one — compare it
+ * against your own deck and cut whatever duplicates it.
  *
  * type: "time" | "power" | "curse"
  * qty:  copies in the deck        cost: cards the hider discards to cast
@@ -11,7 +12,7 @@ window.DECK = [
   /* ---------- TIME BONUSES : ~40% of the deck ---------- */
   { type: "time", title: "+2 minutes", qty: 8, value: 2,
     text: "Bank face up. Adds 2 minutes to the hider's final time.",
-    note: "The printed deck's small bonus is +15 min for a regional board. Zone 1 rounds are ~1/8 the length." },
+    note: "Sized for a round of 45 to 90 minutes. A regional game's bonuses are measured in half-hours; a card worth that here would decide the game on its own." },
   { type: "time", title: "+4 minutes", qty: 6, value: 4,
     text: "Bank face up. Adds 4 minutes to the hider's final time." },
   { type: "time", title: "+6 minutes", qty: 4, value: 6,
@@ -37,7 +38,7 @@ window.DECK = [
   /* ---------- CURSES ---------- */
   { type: "curse", title: "Curse of the Oyster Drought", qty: 2, cost: 2,
     text: "For 15 minutes the seekers may not board any TfL service. Feet only.",
-    note: "Replaces the printed deck's long-haul transport curses. 15 minutes on foot is roughly 1.2 km in central London — exactly one radar ring." },
+    note: "The Zone 1 answer to a long-haul transport curse. Fifteen minutes on foot is about 1.2 km in central London — one radar ring on the pad." },
   { type: "curse", title: "Curse of the Thames Crossing", qty: 2, cost: 2,
     text: "Before their next question, the seekers must cross the Thames on foot over a bridge, and come back over a different one.",
     note: "New, and the single best London curse: the river splits the board and the bridges are 400–800 m apart." },
@@ -49,10 +50,10 @@ window.DECK = [
     note: "New. Note that it is the hider who picks nothing — the seekers pick the direction, and usually pick wrong." },
   { type: "curse", title: "Curse of the Right Turn", qty: 2, cost: 2,
     text: "For 10 minutes, at every junction the seekers must go straight on or turn right. Never left.",
-    note: "Adapted from the printed card. London's streets are not a grid, so 10 minutes here does the damage 30 would do on a grid." },
+    note: "London's streets are not a grid, so ten minutes of this does the damage half an hour would do on one." },
   { type: "curse", title: "Curse of the Drained Brain", qty: 2, cost: 2,
     text: "Until the seekers have asked and been answered one more question, they may not consult any map, paper or digital — including this app.",
-    note: "Adapted. Shorter fuse than the printed version because Zone 1 is navigable from memory." },
+    note: "Short fuse on purpose: Zone 1 is navigable from memory, so a long one just slows the game without biting." },
   { type: "curse", title: "Curse of the Bus Replacement", qty: 2, cost: 2,
     text: "For 20 minutes the seekers may use buses and their feet, but no rail of any kind.",
     note: "New. Milder than the Oyster Drought and often funnier — Zone 1 bus routes are slower than walking." },
@@ -67,7 +68,7 @@ window.DECK = [
     note: "New. Cheap, thematic, and genuinely costly during rush hour at Bank or King's Cross." },
   { type: "curse", title: "Curse of the Lost Tourist", qty: 2, cost: 1,
     text: "One seeker must ask a stranger for directions to a landmark of the hider's choosing, and the group must follow those directions for 3 minutes.",
-    note: "Adapted from the printed deck's stranger-interaction curse." },
+    note: "The cheap social curse. Londoners give confident directions and are wrong about a third of the time." },
   { type: "curse", title: "Curse of the Pigeon Parliament", qty: 1, cost: 2,
     text: "All seekers must stand inside one named square — Trafalgar, Leicester, Russell, Soho or Golden — for 5 unbroken minutes.",
     note: "New. The hider names the square, so it doubles as a way to pull seekers off a good line." },
@@ -76,14 +77,14 @@ window.DECK = [
     note: "New." },
   { type: "curse", title: "Curse of the Ravenous Seeker", qty: 2, cost: 2,
     text: "Each seeker must buy and finish one item of food before the next question. It must come from a place the hider names the type of — bakery, street cart, or chain coffee shop.",
-    note: "Adapted from the printed food curse; the hider naming the venue type keeps it from being a 60-second Pret stop." },
+    note: "The hider naming the venue type is what stops this being a 60-second Pret stop." },
   { type: "curse", title: "Curse of the Statue Salute", qty: 2, cost: 1,
     text: "The seekers must photograph themselves imitating the pose of any public statue.",
     note: "New. Pure tax, no navigation cost — good to dump a spare card into." },
   { type: "curse", title: "Curse of the Unhelpful Compass", qty: 1, cost: 3,
     text: "The hider names two compass directions. For 15 minutes the seekers may only travel in those two directions.",
-    note: "Adapted. Devastating when the seekers are on the wrong side of the river." },
+    note: "Devastating when the seekers are on the wrong side of the river, which is why it costs three." },
   { type: "curse", title: "Curse of the Redacted Answer", qty: 1, cost: 3,
     text: "Choose one question already asked and answered. The seekers must play as if it was never answered, and may not ask that exact question again.",
-    note: "Adapted from the printed memory curse. Best saved for the tentacles answer that gave you away." }
+    note: "Save it for the Measuring answer that gave you away — a draw-3 question costs the seekers far more than three cards cost you." }
 ];

@@ -26,13 +26,22 @@ window.RULES = [
   {
     title: "Asking questions",
     body: [
-      "Seekers ask one question at a time, from the Questions tab. The hider must answer truthfully and promptly. Answering a question is what pays the hider: each category has a **draw** and a **keep** number."
+      "Seekers ask one question at a time, from the printed pad. The Questions tab lists the same options with a verdict on each for this board: **strong** is worth the draw, **situational** works but costs you an argument or a map lookup, **dead** returns the same answer everywhere in Zone 1 and tells you nothing."
     ],
     list: [
-      "Seekers may only ask a question while **stationary** — not on a moving train.",
-      "The hider answers, then draws that category's cards, keeps the allowed number, and discards the rest face down.",
+      "Costs are the pad's: Matching and Measuring are **draw 3, pick 1**; Thermometer and Radar are **draw 2, pick 1**. The hider has **5 minutes** to answer.",
+      "Seekers may only ask while **stationary** — not on a moving train.",
+      "The hider answers, then draws, keeps the pick, and discards the rest face down.",
       "**Hand limit: 6 cards.** Over the limit, discard down immediately.",
-      "The hider may not ask questions, and may not move once they've gone to ground — except when a card says so."
+      "The hider may not ask questions, and may not move once they have gone to ground — except when a card says so."
+    ]
+  },
+  {
+    title: "Which questions actually work here",
+    body: [
+      "The pad is built for a board the size of a country, so a third of its options are constant across Zone 1. The two big categories fail in opposite directions, and it is worth knowing which is which before you spend a draw-3.",
+      "**Matching** partitions the board into the cells around whatever feature you name, so it needs that feature to be **dense**: borough, nearest tube line, museum, hospital, library, consulate. Anything London has only one of — the zoo, the aquarium, a mountain, a landmass — answers yes every time.",
+      "**Measuring** splits the board along the line halfway between you and the target, so it wants the opposite: a **single** target. A distant one (an airport, HS1, the Channel) gives a straight cut whose direction you choose; one inside Zone 1 (London Zoo, the aquarium) gives a ring. Dense features — rail stations, museums, hospitals — are noise."
     ]
   },
   {
@@ -55,8 +64,9 @@ window.RULES = [
   {
     title: "Why the numbers are small",
     body: [
-      "The published Jet Lag format is built for regions the size of Japan or Switzerland: radar radii in kilometres, time bonuses in half-hours. Zone 1 is roughly 6 km across, so everything here is scaled down by about an order of magnitude — radar in hundreds of metres, bonuses in single-digit minutes. A good Zone 1 round lands between 45 and 90 minutes.",
-      "If your rounds are consistently ending under 30 minutes, widen the thermometer step and the radar radii before you touch the time bonuses."
+      "The printed game is built for regions, so its ladders run to 160 km. Zone 1 is about 6 km across. On the pad that means the live radar rows are 500 m, 1 km, 2 km and CHOOSE, and the live thermometer row is 1 km — everything above is always yes, or lands you in Zone 4.",
+      "The card deck is scaled to match: time bonuses in single-digit minutes rather than half-hours, sized for a round of 45 to 90 minutes.",
+      "If your rounds keep ending under 30 minutes, widen the thermometer step first — a 2 km step, or the house 500 m step in reverse — before you touch the time bonuses."
     ]
   }
 ];

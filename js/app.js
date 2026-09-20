@@ -225,15 +225,51 @@
   /* ================================================================
      QUESTIONS
      ================================================================ */
-  el('questions-body').innerHTML = QUESTIONS.map(function (q, qi) {
-    return '<details class="qcat"' + (qi === 0 ? ' open' : '') + '>' +
-      '<summary><span class="dot" style="background:' + q.colour + '"></span>' + esc(q.cat) +
-      '<span class="cost">draw ' + q.draw + ' &middot; keep ' + q.keep + '</span></summary>' +
-      '<p class="blurb">' + md(q.blurb) + '</p><ul>' +
-      q.items.map(function (t, i) {
-        return '<li data-q="' + qi + '" data-i="' + i + '">' + md(t) + '</li>';
-      }).join('') + '</ul></details>';
-  }).join('');
+  var qFilter = 'all';
+
+  function keepItem(item) {
+    if (qFilter === 'all') return true;
+    if (qFilter === 'live') return item.v !== 'dead';
+    return item.v === 'strong';
+  }
+
+  function cost(q) {
+    return q.draw ? 'Draw ' + q.draw + ', pick ' + q.pick + ' &middot; ' + q.minutes + ' min'
+                  : 'cost not transcribed';
+  }
+
+  function renderQuestions() {
+    el('questions-body').innerHTML = QUESTIONS.map(function (q, qi) {
+      var groups = q.groups.map(function (g, gi) {
+        var items = g.items.filter(keepItem).map(function (item) {
+          var i = g.items.indexOf(item);
+          return '<li data-q="' + qi + '" data-g="' + gi + '" data-i="' + i + '">' +
+            '<span class="qt">' + md(item.t) + '</span>' +
+            '<span class="pill ' + item.v + '">' + item.v + '</span>' +
+            (item.house ? '<span class="pill house">house</span>' : '') +
+            '<p class="qnote">' + md(item.note) + '</p></li>';
+        }).join('');
+        return items ? '<div class="qgroup"><h5>' + esc(g.name) + '</h5><ul>' + items + '</ul></div>' : '';
+      }).join('');
+
+      return '<details class="qcat"' + (qi === 0 ? ' open' : '') + '>' +
+        '<summary><span class="dot" style="background:' + q.colour + '"></span>' +
+        q.n + '. ' + esc(q.cat) + '<span class="cost">' + cost(q) + '</span></summary>' +
+        '<p class="prompt">' + md(q.prompt) + '</p>' +
+        (q.missing ? '<p class="missing">' + md(q.missing) + '</p>' : '') +
+        '<p class="blurb">' + md(q.how) + '</p>' +
+        (groups || '<p class="blurb">Nothing at this filter level.</p>') +
+        '</details>';
+    }).join('');
+  }
+  renderQuestions();
+
+  el('q-filter').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip'); if (!b) return;
+    Array.prototype.forEach.call(this.children, function (x) { x.classList.toggle('active', x === b); });
+    qFilter = b.dataset.v;
+    renderQuestions();
+  });
 
   var asked = load(K.asked, []);
   function renderLog() {
@@ -245,18 +281,21 @@
       : '<li class="empty">Nothing asked yet.</li>';
   }
   renderLog();
+
   el('questions-body').addEventListener('click', function (e) {
     var li = e.target.closest('li[data-q]'); if (!li) return;
     var q = QUESTIONS[+li.dataset.q];
+    var item = q.groups[+li.dataset.g].items[+li.dataset.i];
     asked.push({
-      cat: q.cat + ' (draw ' + q.draw + ')',
-      text: q.items[+li.dataset.i],
+      cat: q.cat + (q.draw ? ' (draw ' + q.draw + ')' : ''),
+      text: item.t,
       at: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     });
     save(K.asked, asked);
     renderLog();
     el('asked-log').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
+
   el('btn-clear-log').addEventListener('click', function () {
     if (asked.length && !confirm('Clear the question log?')) return;
     asked = []; save(K.asked, asked); renderLog();
