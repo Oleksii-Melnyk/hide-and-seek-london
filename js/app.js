@@ -44,8 +44,13 @@
   var crossed = {};                       // name -> true
   load(K.crossed, []).forEach(function (n) { crossed[n] = true; });
 
-  var map = L.map('map', { zoomControl: false, tap: false });
-  map.fitBounds(L.latLngBounds(STATIONS.map(function (s) { return [s.lat, s.lon]; })).pad(0.06));
+  var map = L.map('map', { zoomControl: false, tap: false, zoomSnap: 0.25 });
+  var bounds = L.latLngBounds([]);           // include the circles, not just the centres
+  var dLat = RADIUS / 111320, dLon = RADIUS / (111320 * Math.cos(51.5 * Math.PI / 180));
+  STATIONS.forEach(function (s) {
+    bounds.extend([s.lat + dLat, s.lon + dLon]).extend([s.lat - dLat, s.lon - dLon]);
+  });
+  map.fitBounds(bounds, { padding: [8, 8] });
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
   L.control.scale({ imperial: false, position: 'bottomright' }).addTo(map);
