@@ -4,7 +4,7 @@ A single-page web app for playing a Jet Lag-style hide & seek game on London
 Zone 1. Open it on a phone, cross stations off as you rule them out, and keep
 the rules, the question list and the card deck in the same place.
 
-**Live:** https://OWNER.github.io/hide-and-seek-london/
+**Live:** https://oleksii-melnyk.github.io/hide-and-seek-london/
 
 ## What it does
 
